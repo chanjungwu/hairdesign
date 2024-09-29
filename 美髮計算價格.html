@@ -54,7 +54,7 @@
   #perm { background-color: #f39c12; }
   #dye { background-color: #9b59b6; }
   #treatment { background-color: #2ecc71; }
-  #other { background-color: #34495e; }
+  #sale { background-color: #1abc9c; }
 
   .calculator {
     display: grid;
@@ -108,7 +108,7 @@
   #submit:hover {
     background-color: #2ecc71;
   }
-  #takePercentage, #takePercentage55, #assistantFee, #materialFee {
+  #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
     display: inline-block;
     width: calc(25% - 10px);
     padding: 8px;
@@ -121,7 +121,7 @@
     cursor: pointer;
     transition: transform 0.1s ease;
   }
-  #takePercentage:last-child, #takePercentage55:last-child, #assistantFee:last-child, #materialFee:last-child {
+  #takePercentage:last-child, #takePercentage55:last-child, #takePercentage75:last-child, #assistantFee:last-child {
     margin-right: 0;
   }
   #takePercentage {
@@ -136,17 +136,17 @@
   #takePercentage55:hover {
     background-color: #2980b9;
   }
+  #takePercentage75 {
+    background-color: #e74c3c;
+  }
+  #takePercentage75:hover {
+    background-color: #c0392b;
+  }
   #assistantFee {
     background-color: #e67e22;
   }
   #assistantFee:hover {
     background-color: #d35400;
-  }
-  #materialFee {
-    background-color: #1abc9c;
-  }
-  #materialFee:hover {
-    background-color: #16a085;
   }
   #record {
     clear: both;
@@ -156,7 +156,7 @@
   #record:hover {
     background-color: #2980b9;
   }
-  #takePercentage:active, #takePercentage55:active, #assistantFee:active, #materialFee:active, #submit:active, #record:active {
+  #takePercentage:active, #takePercentage55:active, #takePercentage75:active, #assistantFee:active, #submit:active, #record:active {
     transform: scale(0.95);
   }
   #statistics {
@@ -262,7 +262,7 @@
       font-size: 16px;
     }
     
-    #takePercentage, #takePercentage55, #assistantFee, #materialFee {
+    #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
       font-size: 12px;
       padding: 6px;
     }
@@ -304,7 +304,7 @@
       font-size: 14px;
     }
     
-    #takePercentage, #takePercentage55, #assistantFee, #materialFee {
+    #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
       font-size: 10px;
       padding: 4px;
     }
@@ -321,36 +321,6 @@
       padding: 2px 4px;
     }
   }
-  .modal-content .calculator {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin-bottom: 20px;
-  }
-
-  .modal-content .calc-btn {
-    padding: 10px;
-    font-size: 18px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-content #materialAmount {
-    grid-column: span 3;
-    padding: 10px;
-    font-size: 24px;
-    text-align: right;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-
-  .modal-content .calc-btn:nth-child(10) {
-    grid-column: 1 / 3;
-  }
 </style>
 </head>
 <body>
@@ -363,7 +333,7 @@
     <div id="perm" class="service-icon">燙</div>
     <div id="dye" class="service-icon">染</div>
     <div id="treatment" class="service-icon">護</div>
-    <div id="other" class="service-icon">其他</div>
+    <div id="sale" class="service-icon">售</div>
   </div>
   
   <div class="calculator">
@@ -391,8 +361,8 @@
   
   <button id="takePercentage">抽六成</button>
   <button id="takePercentage55">抽5.5成</button>
+  <button id="takePercentage75">抽75成</button>
   <button id="assistantFee">助理收費</button>
-  <button id="materialFee">材料費</button>
   <button id="record">寫下</button>
   
   <div id="customerRecords">
@@ -405,7 +375,6 @@
           <th>總金額</th>
           <th>老闆抽成</th>
           <th>助理收費</th>
-          <th>材料費</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -428,48 +397,19 @@
   </div>
 </div>
 
-<div id="materialFeeModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>輸入材料費</h2>
-    <div class="calculator">
-      <input type="text" id="materialAmount" readonly value="0">
-      <button class="calc-btn material-calc-btn">7</button>
-      <button class="calc-btn material-calc-btn">8</button>
-      <button class="calc-btn material-calc-btn">9</button>
-      <button class="calc-btn material-calc-btn">4</button>
-      <button class="calc-btn material-calc-btn">5</button>
-      <button class="calc-btn material-calc-btn">6</button>
-      <button class="calc-btn material-calc-btn">1</button>
-      <button class="calc-btn material-calc-btn">2</button>
-      <button class="calc-btn material-calc-btn">3</button>
-      <button class="calc-btn material-calc-btn">0</button>
-      <button class="calc-btn material-calc-btn">C</button>
-    </div>
-    <button id="submitMaterialFee">確認</button>
-  </div>
-</div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const serviceIcons = document.querySelectorAll('.service-icon');
   const mainCalcBtns = document.querySelectorAll('.calc-btn:not(.assistant-calc-btn):not(.material-calc-btn)');
-  const calcBtns = document.querySelectorAll('.calc-btn');
   const amountInput = document.getElementById('amount');
   const submitBtn = document.getElementById('submit');
   const recordBtn = document.getElementById('record');
   const takePercentageBtn = document.getElementById('takePercentage');
   const takePercentage55Btn = document.getElementById('takePercentage55');
+  const takePercentage75Btn = document.getElementById('takePercentage75');
   const assistantFeeBtn = document.getElementById('assistantFee');
-  const materialFeeBtn = document.getElementById('materialFee');
   const statisticsDiv = document.getElementById('statistics');
   const recordsBody = document.getElementById('recordsBody');
-  
-  const materialFeeModal = document.getElementById('materialFeeModal');
-  const materialCloseModal = materialFeeModal.querySelector('.close');
-  const materialAmountInput = document.getElementById('materialAmount');
-  const materialCalcBtns = document.querySelectorAll('.material-calc-btn');
-  const submitMaterialFeeBtn = document.getElementById('submitMaterialFee');
   
   let currentService = null;
   let statistics = {
@@ -478,11 +418,11 @@ document.addEventListener('DOMContentLoaded', function() {
     perm: 0,
     dye: 0,
     treatment: 0,
-    other: 0
+    sale: 0
   };
   let bossFee = 0;
   let assistantFee = 0;
-  let materialFee = 0;
+  let assistantFeeClickCount = 0;
   
   function saveRecords() {
     localStorage.setItem('customerRecords', recordsBody.innerHTML);
@@ -530,12 +470,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  materialCalcBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      handleCalcBtnClick(this, materialAmountInput);
-    });
-  });
-  
   submitBtn.addEventListener('click', function() {
     if (currentService && amountInput.value !== '0') {
       const amount = parseInt(amountInput.value);
@@ -561,25 +495,17 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStatistics();
   });
   
+  takePercentage75Btn.addEventListener('click', function() {
+    const total = Object.values(statistics).reduce((sum, curr) => sum + curr, 0);
+    bossFee = Math.round(total * 0.75);
+    updateStatistics();
+  });
+  
   assistantFeeBtn.addEventListener('click', function() {
     const total = Object.values(statistics).reduce((sum, curr) => sum + curr, 0);
-    assistantFee = Math.round(total * 0.4 * 0.2);
+    assistantFeeClickCount++;
+    assistantFee = Math.round(total * 0.4 * 0.1 * assistantFeeClickCount);
     updateStatistics();
-  });
-  
-  materialFeeBtn.addEventListener('click', function() {
-    materialFeeModal.style.display = 'block';
-    materialAmountInput.value = '0';
-  });
-  
-  materialCloseModal.addEventListener('click', function() {
-    materialFeeModal.style.display = 'none';
-  });
-  
-  submitMaterialFeeBtn.addEventListener('click', function() {
-    materialFee = parseInt(materialAmountInput.value);
-    updateStatistics();
-    materialFeeModal.style.display = 'none';
   });
   
   recordBtn.addEventListener('click', function() {
@@ -599,7 +525,6 @@ document.addEventListener('DOMContentLoaded', function() {
         <td>$${total}</td>
         <td>$${bossFee}</td>
         <td>$${assistantFee}</td>
-        <td>$${materialFee}</td>
         <td><button class="delete-btn">清除</button></td>
       `;
       
@@ -610,10 +535,9 @@ document.addEventListener('DOMContentLoaded', function() {
         saveRecords();
       });
       
-      statistics = {wash: 0, cut: 0, treatment: 0, perm: 0, dye: 0, other: 0};
+      statistics = {wash: 0, cut: 0, treatment: 0, perm: 0, dye: 0, sale: 0};
       bossFee = 0;
       assistantFee = 0;
-      materialFee = 0;
       amountInput.value = '0';
       updateStatistics();
       saveRecords();
@@ -649,15 +573,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (assistantFee > 0) {
       const assistantFeeDiv = document.createElement('div');
       assistantFeeDiv.className = 'stat-item';
-      assistantFeeDiv.innerHTML = `<strong>助理收費</strong><strong>$${assistantFee}</strong>`;
+      assistantFeeDiv.innerHTML = `<strong>助理收費 (${assistantFeeClickCount}次)</strong><strong>$${assistantFee}</strong>`;
       statisticsDiv.appendChild(assistantFeeDiv);
-    }
-    
-    if (materialFee > 0) {
-      const materialFeeDiv = document.createElement('div');
-      materialFeeDiv.className = 'stat-item';
-      materialFeeDiv.innerHTML = `<strong>材料費</strong><strong>$${materialFee}</strong>`;
-      statisticsDiv.appendChild(materialFeeDiv);
     }
   }
 
@@ -671,10 +588,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const total = parseInt(cells[2].textContent.replace('$', ''));
       const bossFee = parseInt(cells[3].textContent.replace('$', ''));
       const assistantFee = parseInt(cells[4].textContent.replace('$', ''));
-      const materialFee = parseInt(cells[5].textContent.replace('$', ''));
 
       shopPerformance += total;
-      myIncome += total - bossFee - assistantFee - materialFee;
+      myIncome += total - bossFee - assistantFee;
     });
 
     document.getElementById('shopPerformance').textContent = `$${shopPerformance}`;
@@ -688,15 +604,9 @@ document.addEventListener('DOMContentLoaded', function() {
       perm: '燙',
       dye: '染',
       treatment: '護',
-      other: '其他'
+      sale: '售'
     };
     return `${names[service]}${amount}`;
-  }
-  
-  window.onclick = function(event) {
-    if (event.target == materialFeeModal) {
-      materialFeeModal.style.display = "none";
-    }
   }
 });
 </script>
