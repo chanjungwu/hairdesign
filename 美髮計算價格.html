@@ -90,7 +90,7 @@
     border: 1px solid #bdc3c7;
     border-radius: 5px;
   }
-  #submit, #record {
+  #submit, #record, #recordAsAssistant {
     display: block;
     width: 100%;
     padding: 10px;
@@ -107,6 +107,24 @@
   }
   #submit:hover {
     background-color: #2ecc71;
+  }
+  #record {
+    clear: both;
+    width: 100%;
+    background-color: #3498db;
+  }
+  #record:hover {
+    background-color: #2980b9;
+  }
+  #recordAsAssistant {
+    background-color: #f1c40f;
+    color: white;
+  }
+  #recordAsAssistant:hover {
+    background-color: #f39c12;
+  }
+  #recordAsAssistant:active {
+    transform: scale(0.95);
   }
   #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
     display: inline-block;
@@ -148,17 +166,6 @@
   #assistantFee:hover {
     background-color: #d35400;
   }
-  #record {
-    clear: both;
-    width: 100%;
-    background-color: #3498db;
-  }
-  #record:hover {
-    background-color: #2980b9;
-  }
-  #takePercentage:active, #takePercentage55:active, #takePercentage75:active, #assistantFee:active, #submit:active, #record:active {
-    transform: scale(0.95);
-  }
   #statistics {
     margin-top: 20px;
     border-top: 1px solid #bdc3c7;
@@ -173,6 +180,14 @@
     margin-top: 20px;
     border-top: 1px solid #bdc3c7;
     padding-top: 20px;
+  }
+  #customerRecords table {
+    width: 100%;
+    max-width: 100%;
+    font-size: 14px;
+  }
+  #customerRecords th, #customerRecords td {
+    padding: 6px;
   }
   table {
     width: 100%;
@@ -258,13 +273,21 @@
       font-size: 20px;
     }
     
-    #submit, #record {
+    #submit, #record, #recordAsAssistant {
       font-size: 16px;
     }
     
     #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
       font-size: 12px;
       padding: 6px;
+    }
+    
+    #customerRecords table {
+      font-size: 12px;
+    }
+    
+    #customerRecords th, #customerRecords td {
+      padding: 4px;
     }
     
     table {
@@ -300,13 +323,21 @@
       font-size: 18px;
     }
     
-    #submit, #record {
+    #submit, #record, #recordAsAssistant {
       font-size: 14px;
     }
     
     #takePercentage, #takePercentage55, #takePercentage75, #assistantFee {
       font-size: 10px;
       padding: 4px;
+    }
+    
+    #customerRecords table {
+      font-size: 10px;
+    }
+    
+    #customerRecords th, #customerRecords td {
+      padding: 2px;
     }
     
     table {
@@ -353,6 +384,7 @@
   </div>
   
   <button id="submit">輸入</button>
+  <button id="recordAsAssistant">這筆我是助理</button>
   
   <div id="statistics">
     <h2>收費統計</h2>
@@ -375,6 +407,7 @@
           <th>總金額</th>
           <th>老闆抽成</th>
           <th>助理收費</th>
+          <th>我的收入</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -404,6 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const amountInput = document.getElementById('amount');
   const submitBtn = document.getElementById('submit');
   const recordBtn = document.getElementById('record');
+  const recordAsAssistantBtn = document.getElementById('recordAsAssistant');
   const takePercentageBtn = document.getElementById('takePercentage');
   const takePercentage55Btn = document.getElementById('takePercentage55');
   const takePercentage75Btn = document.getElementById('takePercentage75');
@@ -470,6 +504,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
+  function calculateMyIncome(total, bossFee, assistantFee, isAssistant) {
+    return isAssistant ? assistantFee : (total - bossFee - assistantFee);
+  }
+
+  function addRecord(isAssistant) {
+    const total = Object.values(statistics).reduce((sum, curr) => sum + curr, 0);
+    if (total > 0) {
+      const now = new Date();
+      const dateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+      const services = Object.entries(statistics)
+        .filter(([_, amount]) => amount > 0)
+        .map(([service, amount]) => getServiceName(service, amount))
+        .join(', ');
+      
+      const myIncome = calculateMyIncome(total, bossFee, assistantFee, isAssistant);
+      
+      const newRow = recordsBody.insertRow(0);
+      newRow.innerHTML = `
+        <td>${dateTime}</td>
+        <td>${services}</td>
+        <td>$${total}</td>
+        <td>$${bossFee}</td>
+        <td>$${assistantFee}</td>
+        <td>$${myIncome}</td>
+        <td><button class="delete-btn">清除</button></td>
+      `;
+      
+      const deleteBtn = newRow.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', function() {
+        recordsBody.removeChild(newRow);
+        updateMyPerformance();
+        saveRecords();
+      });
+      
+      statistics = {wash: 0, cut: 0, treatment: 0, perm: 0, dye: 0, sale: 0};
+      bossFee = 0;
+      assistantFee = 0;
+      assistantFeeClickCount = 0;
+      amountInput.value = '0';
+      updateStatistics();
+      saveRecords();
+      updateMyPerformance();
+    } else {
+      alert('沒有可記錄的服務項目！');
+    }
+  }
+
   submitBtn.addEventListener('click', function() {
     if (currentService && amountInput.value !== '0') {
       const amount = parseInt(amountInput.value);
@@ -481,6 +562,14 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       alert('請選擇服務項目並輸入金額！');
     }
+  });
+  
+  recordBtn.addEventListener('click', function() {
+    addRecord(false);
+  });
+
+  recordAsAssistantBtn.addEventListener('click', function() {
+    addRecord(true);
   });
   
   takePercentageBtn.addEventListener('click', function() {
@@ -506,46 +595,6 @@ document.addEventListener('DOMContentLoaded', function() {
     assistantFeeClickCount++;
     assistantFee = Math.round(total * 0.4 * 0.1 * assistantFeeClickCount);
     updateStatistics();
-  });
-  
-  recordBtn.addEventListener('click', function() {
-    const total = Object.values(statistics).reduce((sum, curr) => sum + curr, 0);
-    if (total > 0) {
-      const now = new Date();
-      const dateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-      const services = Object.entries(statistics)
-        .filter(([_, amount]) => amount > 0)
-        .map(([service, amount]) => getServiceName(service, amount))
-        .join(', ');
-      
-      const newRow = recordsBody.insertRow(0);
-      newRow.innerHTML = `
-        <td>${dateTime}</td>
-        <td>${services}</td>
-        <td>$${total}</td>
-        <td>$${bossFee}</td>
-        <td>$${assistantFee}</td>
-        <td><button class="delete-btn">清除</button></td>
-      `;
-      
-      const deleteBtn = newRow.querySelector('.delete-btn');
-      deleteBtn.addEventListener('click', function() {
-        recordsBody.removeChild(newRow);
-        updateMyPerformance();
-        saveRecords();
-      });
-      
-      statistics = {wash: 0, cut: 0, treatment: 0, perm: 0, dye: 0, sale: 0};
-      bossFee = 0;
-      assistantFee = 0;
-      assistantFeeClickCount = 0; // Reset the click count
-      amountInput.value = '0';
-      updateStatistics();
-      saveRecords();
-      updateMyPerformance();
-    } else {
-      alert('沒有可記錄的服務項目！');
-    }
   });
   
   function updateStatistics() {
@@ -587,11 +636,10 @@ document.addEventListener('DOMContentLoaded', function() {
     rows.forEach(row => {
       const cells = row.querySelectorAll('td');
       const total = parseInt(cells[2].textContent.replace('$', ''));
-      const bossFee = parseInt(cells[3].textContent.replace('$', ''));
-      const assistantFee = parseInt(cells[4].textContent.replace('$', ''));
+      const income = parseInt(cells[5].textContent.replace('$', ''));
 
       shopPerformance += total;
-      myIncome += total - bossFee - assistantFee;
+      myIncome += income;
     });
 
     document.getElementById('shopPerformance').textContent = `$${shopPerformance}`;
