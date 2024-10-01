@@ -1,0 +1,324 @@
+<html><head><base href="https://我要能編輯表格中的內容，取消ABC...123...等字樣">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手機板Excel - 多表格版（自動保存）</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  .container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    min-width: 80px;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    border: none;
+    background: transparent;
+  }
+  .toolbar {
+    background-color: #f8f8f8;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .toolbar button, .toolbar select {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  #formula-bar {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .active-date {
+    background-color: #e6f3ff !important;
+  }
+  #sheet-selector {
+    width: calc(100% - 140px); /* 調整寬度以適應新的按鈕位置 */
+    margin-bottom: 10px;
+  }
+  .sheet-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  #delete-sheet {
+    background-color: #f44336;
+    margin-left: 5px;
+  }
+  #add-new-sheet {
+    background-color: #FFC0CB; /* 粉紅色 */
+    margin-right: 5px;
+  }
+  #toggle-date-mode {
+    background-color: #FFD700; /* 黃色 */
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <div class="sheet-controls">
+    <button id="add-new-sheet" onclick="addNewSheet()">新增表格</button>
+    <select id="sheet-selector" onchange="changeSheet()"></select>
+    <button id="delete-sheet" onclick="deleteSheet()">刪除</button>
+  </div>
+  <button onclick="editSheetNames()">編輯表格名稱</button>
+  <button onclick="addRow()">新增列</button>
+  <button onclick="addColumn()">新增欄</button>
+  <button onclick="deleteRow()">刪除列</button>
+  <button onclick="deleteColumn()">刪除欄</button>
+  <button id="toggle-date-mode" onclick="toggleDateMode()">日期</button>
+</div>
+<input type="text" id="formula-bar" placeholder="在此輸入公式">
+<div class="container">
+  <table id="spreadsheet">
+    <tbody>
+      <tr>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+      </tr>
+      <tr>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+      </tr>
+      <tr>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+        <td><input type="text" onchange="updateCell(this)"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+<script>
+  const spreadsheet = document.getElementById('spreadsheet');
+  const formulaBar = document.getElementById('formula-bar');
+  const sheetSelector = document.getElementById('sheet-selector');
+  let activeCell = null;
+  let isDateMode = false;
+  let sheets = {};
+  let currentSheet = '';
+
+  function loadData() {
+    const savedData = localStorage.getItem('excelSheets');
+    if (savedData) {
+      sheets = JSON.parse(savedData);
+      currentSheet = localStorage.getItem('currentSheet') || Object.keys(sheets)[0];
+    } else {
+      sheets = {
+        '表格1': spreadsheet.innerHTML
+      };
+      currentSheet = '表格1';
+    }
+    updateSheetSelector();
+    changeSheet();
+  }
+
+  function saveData() {
+    sheets[currentSheet] = spreadsheet.innerHTML;
+    localStorage.setItem('excelSheets', JSON.stringify(sheets));
+    localStorage.setItem('currentSheet', currentSheet);
+  }
+
+  function updateSheetSelector() {
+    sheetSelector.innerHTML = '';
+    for (let sheetName in sheets) {
+      const option = document.createElement('option');
+      option.value = sheetName;
+      option.textContent = sheetName;
+      sheetSelector.appendChild(option);
+    }
+    sheetSelector.value = currentSheet;
+  }
+
+  function changeSheet() {
+    saveData();
+    currentSheet = sheetSelector.value;
+    spreadsheet.innerHTML = sheets[currentSheet];
+  }
+
+  function addNewSheet() {
+    const newSheetName = prompt('請輸入新表格名稱：');
+    if (newSheetName && !sheets[newSheetName]) {
+      sheets[newSheetName] = '<tbody><tr><td><input type="text" onchange="updateCell(this)"></td></tr></tbody>';
+      updateSheetSelector();
+      sheetSelector.value = newSheetName;
+      changeSheet();
+    }
+  }
+
+  function editSheetNames() {
+    const sheetNames = Object.keys(sheets);
+    const editedNames = prompt('請編輯表格名稱（以逗號分隔）：', sheetNames.join(','));
+    if (editedNames) {
+      const newNames = editedNames.split(',').map(name => name.trim());
+      const newSheets = {};
+      newNames.forEach((name, index) => {
+        if (name && !newSheets[name]) {
+          newSheets[name] = sheets[sheetNames[index]] || '<tbody><tr><td><input type="text" onchange="updateCell(this)"></td></tr></tbody>';
+        }
+      });
+      sheets = newSheets;
+      currentSheet = newNames[0] || '表格1';
+      updateSheetSelector();
+      changeSheet();
+    }
+  }
+
+  function deleteSheet() {
+    if (Object.keys(sheets).length <= 1) {
+      alert('無法刪除最後一個表格！');
+      return;
+    }
+
+    const confirmDelete = confirm(`確定要刪除表格 "${currentSheet}" 嗎？`);
+    if (confirmDelete) {
+      delete sheets[currentSheet];
+      currentSheet = Object.keys(sheets)[0];
+      updateSheetSelector();
+      changeSheet();
+    }
+  }
+
+  function updateCell(input) {
+    const cellValue = input.value;
+
+    if (cellValue.startsWith('=')) {
+      try {
+        const formula = cellValue.substring(1);
+        const result = evaluateFormula(formula);
+        input.value = result;
+      } catch (error) {
+        console.error('Formula error:', error);
+        input.value = '#ERROR!';
+      }
+    }
+    saveData();
+  }
+
+  function evaluateFormula(formula) {
+    // 此處需要更複雜的邏輯來處理單元格引用，目前僅作為示例
+    return math.evaluate(formula);
+  }
+
+  function addRow() {
+    const tbody = spreadsheet.querySelector('tbody');
+    const newRow = document.createElement('tr');
+    const columnCount = tbody.rows[0].cells.length;
+
+    for (let i = 0; i < columnCount; i++) {
+      newRow.innerHTML += `<td><input type="text" onchange="updateCell(this)"></td>`;
+    }
+
+    tbody.appendChild(newRow);
+    saveData();
+  }
+
+  function addColumn() {
+    const tbody = spreadsheet.querySelector('tbody');
+
+    for (let i = 0; i < tbody.rows.length; i++) {
+      const newCell = tbody.rows[i].insertCell(-1);
+      newCell.innerHTML = `<input type="text" onchange="updateCell(this)">`;
+    }
+    saveData();
+  }
+
+  function deleteRow() {
+    const tbody = spreadsheet.querySelector('tbody');
+    if (tbody.rows.length > 1) {
+      tbody.deleteRow(-1);
+      saveData();
+    }
+  }
+
+  function deleteColumn() {
+    const tbody = spreadsheet.querySelector('tbody');
+    if (tbody.rows[0].cells.length > 1) {
+      for (let i = 0; i < tbody.rows.length; i++) {
+        tbody.rows[i].deleteCell(-1);
+      }
+      saveData();
+    }
+  }
+
+  function toggleDateMode() {
+    isDateMode = !isDateMode;
+    const dateButton = document.getElementById('toggle-date-mode');
+    dateButton.style.backgroundColor = isDateMode ? '#FFD700' : '#FFD700';
+  }
+
+  function insertCurrentDateTime(input) {
+    const now = new Date();
+    const dateTimeString = now.toLocaleString('zh-TW', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    input.value = dateTimeString;
+    updateCell(input);
+  }
+
+  spreadsheet.addEventListener('click', function(e) {
+    if (e.target.tagName === 'INPUT') {
+      if (isDateMode) {
+        insertCurrentDateTime(e.target);
+      } else {
+        activeCell = e.target;
+        formulaBar.value = activeCell.value;
+      }
+    }
+  });
+
+  formulaBar.addEventListener('input', function() {
+    if (activeCell) {
+      activeCell.value = formulaBar.value;
+      updateCell(activeCell);
+    }
+  });
+
+  // 在頁面加載時恢復數據
+  window.addEventListener('load', loadData);
+
+  // 在頁面關閉或刷新時保存數據
+  window.addEventListener('beforeunload', saveData);
+</script>
+</body></html>
