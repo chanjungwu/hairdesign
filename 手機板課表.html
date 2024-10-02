@@ -1,17 +1,23 @@
 <html><head><base href="https://我要能編輯表格中的內容，取消ABC...123...等字樣">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>手機板Excel - 多表格版（自動保存）</title>
+<title>手機板Excel - 多表格版（自動保存 + 滑動條優化）</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    overflow-x: hidden;
   }
-  .container {
-    max-width: 100%;
+  .outer-container {
+    width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .inner-container {
+    min-width: 100%;
+    padding-bottom: 20px; /* 為滾動條留出空間 */
   }
   table {
     border-collapse: collapse;
@@ -39,6 +45,11 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
   }
   .toolbar button, .toolbar select {
     background-color: #4CAF50;
@@ -58,13 +69,17 @@
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
+    position: sticky;
+    top: 80px;
+    z-index: 999;
+    background-color: white;
   }
   .active-date {
     background-color: #e6f3ff !important;
   }
   #sheet-selector {
-    width: calc(100% - 140px); /* 調整寬度以適應新的按鈕位置 */
-    margin-bottom: 10px;
+    flex-grow: 1;
+    margin: 0 5px;
   }
   .sheet-controls {
     display: flex;
@@ -75,14 +90,26 @@
   }
   #delete-sheet {
     background-color: #f44336;
-    margin-left: 5px;
   }
   #add-new-sheet {
-    background-color: #FFC0CB; /* 粉紅色 */
-    margin-right: 5px;
+    background-color: #FFC0CB;
   }
   #toggle-date-mode {
-    background-color: #FFD700; /* 黃色 */
+    background-color: #FFD700;
+  }
+  /* 自定義滾動條樣式 */
+  .outer-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  .outer-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .outer-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  .outer-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 </style>
 </head>
@@ -101,26 +128,28 @@
   <button id="toggle-date-mode" onclick="toggleDateMode()">日期</button>
 </div>
 <input type="text" id="formula-bar" placeholder="在此輸入公式">
-<div class="container">
-  <table id="spreadsheet">
-    <tbody>
-      <tr>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-      </tr>
-      <tr>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-      </tr>
-      <tr>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-        <td><input type="text" onchange="updateCell(this)"></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="outer-container">
+  <div class="inner-container">
+    <table id="spreadsheet">
+      <tbody>
+        <tr>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+        </tr>
+        <tr>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+        </tr>
+        <tr>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+          <td><input type="text" onchange="updateCell(this)"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
