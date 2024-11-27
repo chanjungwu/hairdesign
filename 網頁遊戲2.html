@@ -47,113 +47,42 @@
             font-size: 40px;
         }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 30px;
-    border: 15px solid transparent;
-    border-image: linear-gradient(45deg, #ffcdd2, #bbdefb, #c8e6c9, #fff9c4) 1;
-    border-radius: 20px;
-    background-color: white;
-    box-shadow: 
-        0 4px 8px rgba(0,0,0,0.1),
-        inset 0 0 20px rgba(0,0,0,0.05);
-    position: relative;
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 30px;
+            border: 15px solid transparent;
+            border-image: linear-gradient(45deg, #ffcdd2, #bbdefb, #c8e6c9, #fff9c4) 1;
+            border-radius: 20px;
+            background-color: white;
+            box-shadow: 
+                0 4px 8px rgba(0,0,0,0.1),
+                inset 0 0 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
 
-.container::before {
-    content: '🎀';
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+        .container::before {
+            content: '🎀';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-.container::after {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    border: 2px solid #e3f2fd;
-    border-radius: 25px;
-    pointer-events: none;
-    z-index: -1;
-}
-.custom-controls {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-    padding: 10px;
-}
-
-.custom-controls button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.custom-controls button:nth-child(1)::before {
-    content: '▶️';
-}
-
-.custom-controls button:nth-child(2)::before {
-    content: '⏸️';
-}
-
-.custom-controls button:nth-child(3)::before {
-    content: '🔇';
-}
-
-.custom-controls button:nth-child(4)::before {
-    content: '🔊';
-}
-
-.custom-controls button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    background: linear-gradient(45deg, #ffebee, #e3f2fd);
-}
-
-.custom-controls button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.custom-controls button::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: linear-gradient(45deg, #ffcdd2, #bbdefb);
-    opacity: 0;
-    border-radius: 50px;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
-.custom-controls button:hover::after {
-    opacity: 0.2;
-}
-
-        h1 {
-            color: #1976d2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        .container::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #e3f2fd;
+            border-radius: 25px;
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* 登入表單樣式 */
@@ -229,6 +158,12 @@
             cursor: pointer;
         }
 
+        /* 主要內容區域初始隱藏 */
+        .main-content {
+            display: none;
+            visibility: hidden;
+        }
+
         /* 提示訊息樣式 */
         .message-popup {
             position: fixed;
@@ -242,458 +177,148 @@
             animation: slideIn 0.3s ease;
         }
 
+        /* 教師查詢區域樣式 */
+        .teacher-query {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .teacher-query input {
+            padding: 8px;
+            border: 1px solid var(--border-blue);
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .teacher-query button {
+            padding: 8px 15px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .query-result-success {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+        }
+
+        .query-result-error {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffebee;
+            border-radius: 5px;
+            color: #c62828;
+        }
+
+        .completion-code {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-radius: 10px;
+        }
+
+        .code-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 播放控制按鈕樣式 */
+        .custom-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px;
+        }
+
+        .custom-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .custom-controls button:nth-child(1)::before {
+            content: '▶️';
+        }
+
+        .custom-controls button:nth-child(2)::before {
+            content: '⏸️';
+        }
+
+        .custom-controls button:nth-child(3)::before {
+            content: '🔇';
+        }
+
+        .custom-controls button:nth-child(4)::before {
+            content: '🔊';
+        }
+
+        .custom-controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            background: linear-gradient(45deg, #ffebee, #e3f2fd);
+        }
+
+        .custom-controls button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 全部學生資料表格樣式 */
+        .all-students-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .all-students-table th,
+        .all-students-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-blue);
+        }
+
+        .all-students-table th {
+            background-color: var(--primary-blue);
+            color: #1976d2;
+        }
+
+        .all-students-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
         @keyframes slideIn {
             from { transform: translateX(100%); }
             to { transform: translateX(0); }
         }
-
-        /* 主要內容區域（在登入後顯示） */
-        .main-content {
-            display: none;
-        }
-
-        #player {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin: 20px 0;
-        }
-
-        .welcome-message {
-            color: #1976d2;
-            font-size: 1.2em;
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <!-- 裝飾元素 -->
-    <div class="decoration top-left">🎾</div>
-    <div class="decoration top-right">🏃</div>
-    <div class="decoration bottom-left">⭐</div>
-    <div class="decoration bottom-right">🌟</div>
-
-    <!-- 登入表單 -->
-    <div class="login-form" id="loginForm">
-        <h2>歡迎來到跳繩小學堂</h2>
-        <div class="form-group">
-            <label for="studentId">學號 (例如: 112029)</label>
-            <input type="text" id="studentId" placeholder="請輸入學號">
-        </div>
-        <div class="form-group">
-            <label for="studentName">姓名</label>
-            <input type="text" id="studentName" placeholder="請輸入姓名">
-        </div>
-        <button class="submit-btn" onclick="validateStudent()">進入課程</button>
-    </div>
-
-    <!-- 主要內容區域 -->
-    <div class="main-content" id="mainContent">
-        <div class="container">
-            <h1>🎾 跳繩小學堂 🎾</h1>
-            <div class="welcome-message" id="welcomeMessage"></div>
-            <div id="player"></div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 提示訊息 -->
-    <div class="message-popup" id="messagePopup"></div>
-</body>
-</html>
-<script>
-// 學生資料
-const studentData = {
-    '112029': '陳璟學',
-    '112030': '黃眾勤',
-    '112031': '李以恩',
-    '112032': '林蔚丞',
-    '112033': '廖晧嵎',
-    '112034': '徐睿得',
-    '112170': '曾宇晨',
-    '112036': '賴晨碩',
-    '112038': '鍾程帆',
-    '112039': '曾振程',
-    '112040': '詹棋淯',
-    '112041': '沈凱亦',
-    '112042': '黃千造',
-    '112043': '廖梓皓',
-    '112044': '王安婕',
-    '112045': '陳子芯',
-    '112046': '顏菡誼',
-    '112047': '黃宥馜',
-    '112048': '丁羽岑',
-    '112049': '林芮言',
-    '112050': '呂雨芯',
-    '112051': '陳芷穎',
-    '112052': '鍾岑皣',
-    '112053': '張馨予',
-    '112054': '趙芊穎',
-    '112055': '吳可筠',
-    '112177': '朱貞熙',
-    '112178': '蔡昀憓'
-};
-
-let player;
-let lastTimeUpdate = 0;
-const timeUpdateInterval = 250; // 更新頻率（毫秒）
-
-// YouTube API 載入
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// 驗證學生資料
-function validateStudent() {
-    const studentId = document.getElementById('studentId').value;
-    const studentName = document.getElementById('studentName').value;
-
-    if (!studentId || !studentName) {
-        showMessage('請填寫完整的學號和姓名');
-        return;
-    }
-
-    if (!studentData[studentId]) {
-        showMessage('查無此學號');
-        return;
-    }
-
-    if (studentData[studentId] !== studentName) {
-        showMessage('學號與姓名不符');
-        return;
-    }
-
-    // 登入成功
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-    document.getElementById('welcomeMessage').textContent = `歡迎 ${studentName} 同學`;
-}
-
-// 顯示提示訊息
-function showMessage(text, duration = 3000) {
-    const popup = document.getElementById('messagePopup');
-    popup.textContent = text;
-    popup.style.display = 'block';
-    
-    setTimeout(() => {
-        popup.style.display = 'none';
-    }, duration);
-}
-
-// YouTube 播放器初始化
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '360',
-        width: '640',
-        videoId: 'sfBmkBlzG-Y',
-        playerVars: {
-            disablekb: 1,        // 禁用鍵盤控制
-            controls: 0,         // 隱藏播放器控制項
-            modestbranding: 1,   // 隱藏 YouTube Logo
-            rel: 0,             // 不顯示相關視頻
-            showinfo: 0         // 不顯示視頻信息
-        },
-        events: {
-            'onStateChange': onPlayerStateChange,
-            'onReady': onPlayerReady
-        }
-    });
-}
-
-// 播放器就緒
-function onPlayerReady(event) {
-    // 添加自定義控制按鈕
-    addCustomControls();
-    
-    // 設置進度條標記
-    setupProgressMarkers();
-}
-
-// 播放狀態改變
-function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        startTimeTracking();
-    } else {
-        stopTimeTracking();
-    }
-}
-
-// 開始追蹤時間
-function startTimeTracking() {
-    if (!player) return;
-    
-    const trackTime = () => {
-        const currentTime = player.getCurrentTime();
-        
-        // 檢查是否試圖跳轉
-        if (Math.abs(currentTime - lastTimeUpdate) > 2) {
-            showMessage('不要跳轉喔，有小考題目喔');
-            player.seekTo(lastTimeUpdate, true);
-        }
-        
-        lastTimeUpdate = currentTime;
-        updateProgressBar(currentTime);
-        
-        if (player.getPlayerState() == YT.PlayerState.PLAYING) {
-            setTimeout(trackTime, timeUpdateInterval);
-        }
-    };
-    
-    trackTime();
-}
-
-// 停止追蹤時間
-function stopTimeTracking() {
-    clearTimeout(timeUpdateInterval);
-}
-
-// 更新進度條
-function updateProgressBar(currentTime) {
-    const duration = player.getDuration();
-    const progress = (currentTime / duration) * 100;
-    document.getElementById('progressBar').style.width = `${progress}%`;
-}
-
-// 添加自定義控制按鈕
-function addCustomControls() {
-    const controlsDiv = document.createElement('div');
-    controlsDiv.className = 'custom-controls';
-    controlsDiv.innerHTML = `
-        <button onclick="playVideo()">播放</button>
-        <button onclick="pauseVideo()">暫停</button>
-        <button onclick="muteVideo()">靜音</button>
-        <button onclick="unmuteVideo()">取消靜音</button>
-    `;
-    
-    document.getElementById('player').after(controlsDiv);
-}
-
-// 播放器控制函數
-function playVideo() { player.playVideo(); }
-function pauseVideo() { player.pauseVideo(); }
-function muteVideo() { player.mute(); }
-function unmuteVideo() { player.unMute(); }
-</script>
-<script>
-// 測驗題目資料
-const quizzes = [
-    {
-        time: 60,
-        question: "跳繩的長度，踩著跳繩測量到哪裡適合？",
-        options: ["腋下", "腰部", "頭頂", "膝蓋"],
-        correct: 0,
-        feedback: {
-            correct: "答對了！跳繩長度到腋下是最適合的！",
-            incorrect: "答錯了！正確答案是腋下喔！跳繩太長或太短都會影響跳繩的順暢度。"
-        }
-    },
-    {
-        time: 94,
-        question: "控制跳繩方向主要使用：",
-        options: ["小拇指", "無名指", "手肘", "大拇指"],
-        correct: 3,
-        feedback: {
-            correct: "沒錯！使用大拇指來控制跳繩方向最準確！",
-            incorrect: "不對喔！使用大拇指來控制跳繩方向才是正確的做法！"
-        }
-    },
-    {
-        time: 124,
-        question: "教練認為跳繩最大的罩門(困難處)是哪個？",
-        options: ["跳躍高度", "身高", "甩繩", "頭部大小"],
-        correct: 2,
-        feedback: {
-            correct: "答對了！甩繩確實是最困難的部分！",
-            incorrect: "答錯了！甩繩技巧是最大的困難處喔！"
-        }
-    },
-    {
-        time: 145,
-        question: "影片教練說明跳繩時膝蓋不要過度打直，承融老師則認為，小朋友初學跳繩時，膝蓋應...",
-        options: ["盡可能彎曲", "打直一點"],
-        correct: 1,
-        feedback: {
-            correct: "承融老師認為小朋友跳繩時膝蓋過彎的情形多於膝蓋過於打直的情形，因此鼓勵同學膝蓋打直一些。",
-            incorrect: "答錯了！承融老師建議初學者應該要把膝蓋打直一點喔！"
-        }
-    },
-    {
-        time: 225,
-        question: "教練說跳躍的高度約幾公分：",
-        options: ["2.5~5公分", "10~15公分", "15~20公分", "20~25公分"],
-        correct: 0,
-        feedback: {
-            correct: "正確！跳躍不需要太高，2.5~5公分就足夠了！",
-            incorrect: "答錯了！跳繩時只需要跳2.5~5公分的高度就夠了，不需要跳太高喔！"
-        }
-    },
-    {
-        time: 450,
-        question: "本課堂活動非商業活動，因此不鼓勵(也不反對)小朋友上傳影片至泰萌教練說的網站，了解嗎？",
-        options: ["了解", "懂了", "非常了解", "遵命"],
-        correct: [0, 1, 2, 3],
-        feedback: {
-            correct: "謝謝你的理解！",
-            incorrect: "請再仔細想想～"
-        }
-    }
-];
-
-// 設置進度條上的測驗標記
-function setupProgressMarkers() {
-    const duration = player.getDuration();
-    const progressContainer = document.querySelector('.progress-container');
-    
-    quizzes.forEach((quiz, index) => {
-        const marker = document.createElement('div');
-        marker.className = 'quiz-marker';
-        marker.style.left = `${(quiz.time / duration) * 100}%`;
-        marker.title = `測驗 ${index + 1}`;
-        progressContainer.appendChild(marker);
-    });
-}
-
-// 檢查測驗時間點
-function checkQuizTime(currentTime) {
-    quizzes.forEach((quiz, index) => {
-        if (Math.abs(currentTime - quiz.time) < 1 && !quiz.completed) {
-            showQuiz(index);
-            quiz.completed = true;
-            player.pauseVideo();
-        }
-    });
-}
-
-// 顯示測驗
-function showQuiz(index) {
-    const quiz = quizzes[index];
-    const overlay = document.createElement('div');
-    overlay.className = 'quiz-overlay';
-    overlay.innerHTML = `
-        <div class="quiz-container">
-            <div class="quiz-emoji">📝</div>
-            <h3>第 ${index + 1} 題</h3>
-            <div class="quiz-question">${quiz.question}</div>
-            <div class="quiz-options">
-                ${quiz.options.map((option, i) => `
-                    <button class="quiz-option" onclick="checkAnswer(${index}, ${i})">${option}</button>
-                `).join('')}
-            </div>
-            <div class="quiz-feedback"></div>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-
-    // 添加動畫效果
-    setTimeout(() => overlay.style.opacity = '1', 0);
-}
-
-let score = 0;
-const totalQuestions = quizzes.length;
-
-// 檢查答案
-function checkAnswer(quizIndex, selectedOption) {
-    const quiz = quizzes[quizIndex];
-    const overlay = document.querySelector('.quiz-overlay');
-    const feedback = overlay.querySelector('.quiz-feedback');
-    
-    const isCorrect = Array.isArray(quiz.correct) 
-        ? quiz.correct.includes(selectedOption)
-        : selectedOption === quiz.correct;
-
-    if (isCorrect) {
-        score++;
-        feedback.innerHTML = `
-            <div class="feedback-correct">
-                <span class="emoji">✨</span>
-                ${quiz.feedback.correct}
-            </div>
-        `;
-        
-        // 延遲後繼續播放
-        setTimeout(() => {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.remove();
-                player.playVideo();
-                
-                // 檢查是否完成所有測驗
-                if (quizzes.every(q => q.completed)) {
-                    showFinalScore();
-                }
-            }, 500);
-        }, 2000);
-    } else {
-        feedback.innerHTML = `
-            <div class="feedback-incorrect">
-                <span class="emoji">💡</span>
-                ${quiz.feedback.incorrect}
-            </div>
-        `;
-    }
-}
-
-// 顯示最終分數
-function showFinalScore() {
-    const scoreOverlay = document.createElement('div');
-    scoreOverlay.className = 'final-score-overlay';
-    scoreOverlay.innerHTML = `
-        <div class="final-score-container">
-            <div class="celebration-emoji">🎉</div>
-            <h2>恭喜完成所有測驗！</h2>
-            <div class="score-display">
-                得分：${score}/${totalQuestions}
-            </div>
-            <div class="score-message">
-                ${getScoreMessage(score)}
-            </div>
-            <button onclick="this.parentElement.parentElement.remove()">完成</button>
-        </div>
-    `;
-    document.body.appendChild(scoreOverlay);
-}
-
-// 根據分數給予評語
-function getScoreMessage(score) {
-    const percentage = (score / totalQuestions) * 100;
-    if (percentage === 100) return "太棒了！你完全掌握了跳繩的要領！🌟";
-    if (percentage >= 80) return "做得很好！再多練習一下就更完美了！✨";
-    if (percentage >= 60) return "及格囉！繼續加油！💪";
-    return "要多多練習喔！別灰心！📚";
-}
-
-// 在時間追蹤函數中添加測驗檢查
-function startTimeTracking() {
-    if (!player) return;
-    
-    const trackTime = () => {
-        const currentTime = player.getCurrentTime();
-        
-        // 檢查是否試圖跳轉
-        if (Math.abs(currentTime - lastTimeUpdate) > 2) {
-            showMessage('不要跳轉喔，有小考題目喔');
-            player.seekTo(lastTimeUpdate, true);
-        }
-        
-        // 更新時間和進度條
-        lastTimeUpdate = currentTime;
-        updateProgressBar(currentTime);
-        
-        // 檢查測驗時間點
-        checkQuizTime(currentTime);
-        
-        if (player.getPlayerState() == YT.PlayerState.PLAYING) {
-            setTimeout(trackTime, timeUpdateInterval);
-        }
-    };
-    
-    trackTime();
-}
-</script>
-
-<style>
 /* 測驗相關樣式 */
 .quiz-overlay {
     position: fixed;
@@ -807,4 +432,563 @@ function startTimeTracking() {
     color: #333;
     margin: 20px 0;
 }
-</style>
+    </style>
+</head>
+<body>
+    <!-- 裝飾元素 -->
+    <div class="decoration top-left">🎾</div>
+    <div class="decoration top-right">🏃</div>
+    <div class="decoration bottom-left">⭐</div>
+    <div class="decoration bottom-right">🌟</div>
+
+    <!-- 教師查詢區域 -->
+    <div class="teacher-query">
+        <input type="text" id="codeQuery" placeholder="請輸入通關密語">
+        <button onclick="queryCompletionCode()">查詢</button>
+        <div id="queryResult"></div>
+    </div>
+
+    <!-- 登入表單 -->
+    <div class="login-form" id="loginForm">
+        <h2>歡迎來到跳繩小學堂</h2>
+        <div class="form-group">
+            <label for="studentId">學號 (例如: 112029)</label>
+            <input type="text" id="studentId" placeholder="請輸入學號">
+        </div>
+        <div class="form-group">
+            <label for="studentName">姓名</label>
+            <input type="text" id="studentName" placeholder="請輸入姓名">
+        </div>
+        <button class="submit-btn" onclick="validateStudent()">進入課程</button>
+    </div>
+
+    <!-- 主要內容區域（初始隱藏） -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <h1>🎾 跳繩小學堂 🎾</h1>
+            <div class="welcome-message" id="welcomeMessage"></div>
+            <div id="player"></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示訊息 -->
+    <div class="message-popup" id="messagePopup"></div>
+</body>
+</html>
+<script>
+// 學生資料
+const studentData = {
+    '112029': '陳璟學',
+    '112030': '黃眾勤',
+    '112031': '李以恩',
+    '112032': '林蔚丞',
+    '112033': '廖晧嵎',
+    '112034': '徐睿得',
+    '112170': '曾宇晨',
+    '112036': '賴晨碩',
+    '112038': '鍾程帆',
+    '112039': '曾振程',
+    '112040': '詹棋淯',
+    '112041': '沈凱亦',
+    '112042': '黃千造',
+    '112043': '廖梓皓',
+    '112044': '王安婕',
+    '112045': '陳子芯',
+    '112046': '顏菡誼',
+    '112047': '黃宥馜',
+    '112048': '丁羽岑',
+    '112049': '林芮言',
+    '112050': '呂雨芯',
+    '112051': '陳芷穎',
+    '112052': '鍾岑皣',
+    '112053': '張馨予',
+    '112054': '趙芊穎',
+    '112055': '吳可筠',
+    '112177': '朱貞熙',
+    '112178': '蔡昀憓'
+};
+
+let player;
+let lastTimeUpdate = 0;
+const timeUpdateInterval = 250; // 更新頻率（毫秒）
+let youtubeApiReady = false;
+
+// YouTube API 載入
+function loadYouTubeAPI() {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// 驗證學生資料
+function validateStudent() {
+    const studentId = document.getElementById('studentId').value;
+    const studentName = document.getElementById('studentName').value;
+
+    if (!studentId || !studentName) {
+        showMessage('請填寫完整的學號和姓名');
+        return;
+    }
+
+    if (!studentData[studentId]) {
+        showMessage('查無此學號');
+        return;
+    }
+
+    if (studentData[studentId] !== studentName) {
+        showMessage('學號與姓名不符');
+        return;
+    }
+
+    // 登入成功
+    document.getElementById('loginForm').style.display = 'none';
+    const mainContent = document.getElementById('mainContent');
+    mainContent.style.display = 'block';
+    mainContent.style.visibility = 'visible';
+    document.getElementById('welcomeMessage').textContent = `歡迎 ${studentName} 同學`;
+
+    // 初始化 YouTube 播放器
+    if (!player) {
+        loadYouTubeAPI();
+    }
+}
+
+// 顯示提示訊息
+function showMessage(text, duration = 3000) {
+    const popup = document.getElementById('messagePopup');
+    popup.textContent = text;
+    popup.style.display = 'block';
+    
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, duration);
+}
+
+// YouTube 播放器初始化
+function onYouTubeIframeAPIReady() {
+    youtubeApiReady = true;
+    player = new YT.Player('player', {
+        height: '360',
+        width: '640',
+        videoId: 'sfBmkBlzG-Y',
+        playerVars: {
+            disablekb: 1,        // 禁用鍵盤控制
+            controls: 0,         // 隱藏播放器控制項
+            modestbranding: 1,   // 隱藏 YouTube Logo
+            rel: 0,             // 不顯示相關視頻
+            showinfo: 0,        // 不顯示視頻信息
+            fs: 0              // 禁用全螢幕
+        },
+        events: {
+            'onStateChange': onPlayerStateChange,
+            'onReady': onPlayerReady
+        }
+    });
+}
+
+// 播放器就緒
+function onPlayerReady(event) {
+    // 添加自定義控制按鈕
+    addCustomControls();
+    
+    // 設置進度條標記
+    setupProgressMarkers();
+}
+
+// 播放狀態改變
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        startTimeTracking();
+    } else {
+        stopTimeTracking();
+    }
+}
+
+// 開始追蹤時間
+function startTimeTracking() {
+    if (!player) return;
+    
+    const trackTime = () => {
+        const currentTime = player.getCurrentTime();
+        
+        // 檢查是否試圖跳轉
+        if (Math.abs(currentTime - lastTimeUpdate) > 2) {
+            showMessage('不要跳轉喔，有小考題目喔');
+            player.seekTo(lastTimeUpdate, true);
+        }
+        
+        lastTimeUpdate = currentTime;
+        updateProgressBar(currentTime);
+        
+        // 檢查測驗時間點
+        checkQuizTime(currentTime);
+        
+        if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+            setTimeout(trackTime, timeUpdateInterval);
+        }
+    };
+    
+    trackTime();
+}
+
+// 停止追蹤時間
+function stopTimeTracking() {
+    clearTimeout(timeUpdateInterval);
+}
+
+// 更新進度條
+function updateProgressBar(currentTime) {
+    const duration = player.getDuration();
+    const progress = (currentTime / duration) * 100;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+}
+
+// 添加自定義控制按鈕
+function addCustomControls() {
+    const controlsDiv = document.createElement('div');
+    controlsDiv.className = 'custom-controls';
+    controlsDiv.innerHTML = `
+        <button onclick="playVideo()">播放</button>
+        <button onclick="pauseVideo()">暫停</button>
+        <button onclick="muteVideo()">靜音</button>
+        <button onclick="unmuteVideo()">取消靜音</button>
+    `;
+    
+    document.getElementById('player').after(controlsDiv);
+}
+
+// 播放器控制函數
+function playVideo() { if (player) player.playVideo(); }
+function pauseVideo() { if (player) player.pauseVideo(); }
+function muteVideo() { if (player) player.mute(); }
+function unmuteVideo() { if (player) player.unMute(); }
+</script>
+<script>
+// 測驗題目資料
+const quizzes = [
+    {
+        time: 60,
+        question: "跳繩的長度，踩著跳繩測量到哪裡適合？",
+        options: ["腋下", "腰部", "頭頂", "膝蓋"],
+        correct: 0,
+        feedback: {
+            correct: "答對了！跳繩長度到腋下是最適合的！",
+            incorrect: "答錯了！正確答案是腋下喔！跳繩太長或太短都會影響跳繩的順暢度。"
+        }
+    },
+    {
+        time: 94,
+        question: "控制跳繩方向主要使用：",
+        options: ["小拇指", "無名指", "手肘", "大拇指"],
+        correct: 3,
+        feedback: {
+            correct: "沒錯！使用大拇指來控制跳繩方向最準確！",
+            incorrect: "不對喔！使用大拇指來控制跳繩方向才是正確的做法！"
+        }
+    },
+    {
+        time: 124,
+        question: "教練認為跳繩最大的罩門(困難處)是哪個？",
+        options: ["跳躍高度", "身高", "甩繩", "頭部大小"],
+        correct: 2,
+        feedback: {
+            correct: "答對了！甩繩確實是最困難的部分！",
+            incorrect: "答錯了！甩繩技巧是最大的困難處喔！"
+        }
+    },
+    {
+        time: 145,
+        question: "影片教練說明跳繩時膝蓋不要過度打直，承融老師則認為，小朋友初學跳繩時，膝蓋應...",
+        options: ["盡可能彎曲", "打直一點"],
+        correct: 1,
+        feedback: {
+            correct: "承融老師認為小朋友跳繩時膝蓋過彎的情形多於膝蓋過於打直的情形，因此鼓勵同學膝蓋打直一些。",
+            incorrect: "答錯了！承融老師建議初學者應該要把膝蓋打直一點喔！"
+        }
+    },
+    {
+        time: 225,
+        question: "教練說跳躍的高度約幾公分：",
+        options: ["2.5~5公分", "10~15公分", "15~20公分", "20~25公分"],
+        correct: 0,
+        feedback: {
+            correct: "正確！跳躍不需要太高，2.5~5公分就足夠了！",
+            incorrect: "答錯了！跳繩時只需要跳2.5~5公分的高度就夠了，不需要跳太高喔！"
+        }
+    },
+    {
+        time: 450,
+        question: "本課堂活動非商業活動，因此不鼓勵(也不反對)小朋友上傳影片至泰萌教練說的網站，了解嗎？",
+        options: ["了解", "懂了", "非常了解", "遵命"],
+        correct: [0, 1, 2, 3],
+        feedback: {
+            correct: "謝謝你的理解！",
+            incorrect: "請再仔細想想～"
+        }
+    }
+];
+
+let score = 0;
+const totalQuestions = quizzes.length;
+
+// 設置進度條測驗標記
+function setupProgressMarkers() {
+    const duration = player.getDuration();
+    const progressContainer = document.querySelector('.progress-container');
+    
+    quizzes.forEach((quiz, index) => {
+        const marker = document.createElement('div');
+        marker.className = 'quiz-marker';
+        marker.style.left = `${(quiz.time / duration) * 100}%`;
+        marker.title = `測驗 ${index + 1}`;
+        progressContainer.appendChild(marker);
+    });
+}
+
+// 檢查測驗時間點
+function checkQuizTime(currentTime) {
+    quizzes.forEach((quiz, index) => {
+        if (Math.abs(currentTime - quiz.time) < 1 && !quiz.completed) {
+            showQuiz(index);
+            quiz.completed = true;
+            player.pauseVideo();
+        }
+    });
+}
+
+// 顯示測驗
+function showQuiz(index) {
+    const quiz = quizzes[index];
+    const overlay = document.createElement('div');
+    overlay.className = 'quiz-overlay';
+    overlay.innerHTML = `
+        <div class="quiz-container">
+            <div class="quiz-emoji">📝</div>
+            <h3>第 ${index + 1} 題</h3>
+            <div class="quiz-question">${quiz.question}</div>
+            <div class="quiz-options">
+                ${quiz.options.map((option, i) => `
+                    <button class="quiz-option" onclick="checkAnswer(${index}, ${i})">${option}</button>
+                `).join('')}
+            </div>
+            <div class="quiz-feedback"></div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // 添加動畫效果
+    setTimeout(() => overlay.style.opacity = '1', 0);
+}
+
+// 檢查答案
+function checkAnswer(quizIndex, selectedOption) {
+    const quiz = quizzes[quizIndex];
+    const overlay = document.querySelector('.quiz-overlay');
+    const feedback = overlay.querySelector('.quiz-feedback');
+    
+    const isCorrect = Array.isArray(quiz.correct) 
+        ? quiz.correct.includes(selectedOption)
+        : selectedOption === quiz.correct;
+
+    if (isCorrect) {
+        score++;
+        feedback.innerHTML = `
+            <div class="feedback-correct">
+                <span class="emoji">✨</span>
+                ${quiz.feedback.correct}
+            </div>
+        `;
+        
+        // 延遲後繼續播放
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.remove();
+                player.playVideo();
+                
+                // 檢查是否完成所有測驗
+                if (quizzes.every(q => q.completed)) {
+                    showFinalScore();
+                }
+            }, 500);
+        }, 2000);
+    } else {
+        feedback.innerHTML = `
+            <div class="feedback-incorrect">
+                <span class="emoji">💡</span>
+                ${quiz.feedback.incorrect}
+            </div>
+        `;
+    }
+}
+</script>
+<script>
+// 生成通關密語
+function generateCompletionCode(studentId, score) {
+    const lastTwoDigits = studentId.slice(-2);
+    const randomNum = Math.floor(Math.random() * 9000 + 1000); // 4位隨機數字
+    const completionCode = `${lastTwoDigits}${score}${randomNum}`;
+    
+    // 儲存資料到 localStorage
+    const studentData = {
+        studentId: studentId,
+        studentName: document.getElementById('welcomeMessage').textContent.split(' ')[1],
+        score: score,
+        completionCode: completionCode,
+        completionTime: new Date().toLocaleString()
+    };
+    
+    // 儲存或更新學生紀錄
+    const allRecords = JSON.parse(localStorage.getItem('studentRecords') || '{}');
+    allRecords[studentId] = studentData;
+    localStorage.setItem('studentRecords', JSON.stringify(allRecords));
+    localStorage.setItem(completionCode, JSON.stringify(studentData));
+    
+    return completionCode;
+}
+
+// 顯示最終分數和通關密語
+function showFinalScore() {
+    const studentId = document.getElementById('studentId').value;
+    const completionCode = generateCompletionCode(studentId, score);
+    
+    const scoreOverlay = document.createElement('div');
+    scoreOverlay.className = 'final-score-overlay';
+    scoreOverlay.innerHTML = `
+        <div class="final-score-container">
+            <div class="celebration-emoji">🎉</div>
+            <h2>恭喜完成所有測驗！</h2>
+            <div class="score-display">
+                得分：${score}/${totalQuestions}
+            </div>
+            <div class="score-message">
+                ${getScoreMessage(score)}
+            </div>
+            <div class="completion-code">
+                <h3>您的通關密語</h3>
+                <div class="code-display">${completionCode}</div>
+                <p>請將此通關密語交給老師以證明完成測驗</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()">完成</button>
+        </div>
+    `;
+    document.body.appendChild(scoreOverlay);
+}
+
+// 根據分數給予評語
+function getScoreMessage(score) {
+    const percentage = (score / totalQuestions) * 100;
+    if (percentage === 100) return "太棒了！你完全掌握了跳繩的要領！🌟";
+    if (percentage >= 80) return "做得很好！再多練習一下就更完美了！✨";
+    if (percentage >= 60) return "及格囉！繼續加油！💪";
+    return "要多多練習喔！別灰心！📚";
+}
+
+// 查詢通關密語
+function queryCompletionCode() {
+    const code = document.getElementById('codeQuery').value.trim();
+    const resultDiv = document.getElementById('queryResult');
+
+    // 檢查是否是查看所有學生的特殊代碼
+    if (code === '9292929') {
+        showAllStudentRecords();
+        return;
+    }
+    
+    const studentData = localStorage.getItem(code);
+    if (studentData) {
+        const data = JSON.parse(studentData);
+        resultDiv.innerHTML = `
+            <div class="query-result-success">
+                <p>學號：${data.studentId}</p>
+                <p>姓名：${data.studentName}</p>
+                <p>得分：${data.score}/${totalQuestions}</p>
+                <p>完成時間：${data.completionTime}</p>
+            </div>
+        `;
+    } else {
+        resultDiv.innerHTML = `
+            <div class="query-result-error">
+                未找到此通關密語的紀錄
+            </div>
+        `;
+    }
+}
+
+// 顯示所有學生記錄
+function showAllStudentRecords() {
+    const resultDiv = document.getElementById('queryResult');
+    const allRecords = JSON.parse(localStorage.getItem('studentRecords') || '{}');
+    
+    if (Object.keys(allRecords).length === 0) {
+        resultDiv.innerHTML = `
+            <div class="query-result-error">
+                目前還沒有學生完成測驗
+            </div>
+        `;
+        return;
+    }
+
+    let tableHTML = `
+        <table class="all-students-table">
+            <thead>
+                <tr>
+                    <th>學號</th>
+                    <th>姓名</th>
+                    <th>得分</th>
+                    <th>通關密語</th>
+                    <th>完成時間</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    for (const studentId in allRecords) {
+        const data = allRecords[studentId];
+        tableHTML += `
+            <tr>
+                <td>${data.studentId}</td>
+                <td>${data.studentName}</td>
+                <td>${data.score}/${totalQuestions}</td>
+                <td>${data.completionCode}</td>
+                <td>${data.completionTime}</td>
+            </tr>
+        `;
+    }
+
+    tableHTML += `
+            </tbody>
+        </table>
+    `;
+
+    resultDiv.innerHTML = tableHTML;
+}
+
+// 在頁面加載時清理過期的資料（可選）
+function cleanupOldData() {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    const allRecords = JSON.parse(localStorage.getItem('studentRecords') || '{}');
+    let cleaned = false;
+    
+    for (const studentId in allRecords) {
+        const completionTime = new Date(allRecords[studentId].completionTime);
+        if (completionTime < oneWeekAgo) {
+            delete allRecords[studentId];
+            cleaned = true;
+        }
+    }
+    
+    if (cleaned) {
+        localStorage.setItem('studentRecords', JSON.stringify(allRecords));
+    }
+}
+
+// 在頁面載入時執行清理
+window.addEventListener('load', cleanupOldData);
+</script>
