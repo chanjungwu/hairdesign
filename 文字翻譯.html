@@ -1,223 +1,317 @@
-<!DOCTYPE html><html><head><base href="https://secretencrypt.example.com/">
-<title>文字加密器</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-body {
-  font-family: 'Roboto', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #333;
-}
-
-.container {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 500px;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-}
-
-h1 {
-  color: #4a4a4a;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-textarea {
-  width: 100%;
-  height: 120px;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  border: 2px solid #d1d1d1;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  resize: vertical;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102,126,234,0.3);
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  width: 100%;
-}
-
-button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 0 0.5rem;
-}
-
-#encryptBtn {
-  background-color: #667eea;
-  color: white;
-}
-
-#decryptBtn {
-  background-color: #764ba2;
-  color: white;
-}
-
-#copyBtn {
-  background-color: #4a4a4a;
-  color: white;
-  width: 100%;
-  margin-top: 1rem;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-#resultArea {
-  margin-top: 2rem;
-  display: none;
-  animation: fadeIn 0.5s ease;
-  width: 100%;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-#resultText {
-  width: 100%;
-  min-height: 60px;
-  padding: 1rem;
-  border: 2px solid #d1d1d1;
-  border-radius: 12px;
-  background-color: #f8f8f8;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.9rem;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 1.5rem;
-  }
-  
-  h1 {
-    font-size: 2rem;
-  }
-  
-  button {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.9rem;
-  }
-}
-</style>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本加密解密工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 100px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #decryptBtn {
+            background-color: #2196F3;
+        }
+        #decryptBtn:hover {
+            background-color: #0b7dda;
+        }
+        #copyBtn {
+            background-color: #607D8B;
+        }
+        #copyBtn:hover {
+            background-color: #546E7A;
+        }
+        .password-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .password-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        .status.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+        .status.error {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>文字加密器</h1>
-  <textarea id="inputText" placeholder="請輸入要加密或解密的文字..."></textarea>
-  <div class="button-group">
-    <button id="encryptBtn">加密</button>
-    <button id="decryptBtn">解密</button>
-  </div>
-  <div id="resultArea">
-    <div id="resultText"></div>
-    <button id="copyBtn">複製結果</button>
-  </div>
-</div>
+    <div class="container">
+        <h1>文本加密解密工具</h1>
+        
+        <div class="form-group">
+            <label for="password">密碼（用於加密和解密）：</label>
+            <div class="password-input">
+                <input type="password" id="password" placeholder="請輸入密碼">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="inputText">輸入文本：</label>
+            <textarea id="inputText" placeholder="請在此輸入要加密或解密的文本"></textarea>
+        </div>
+        
+        <div class="buttons">
+            <button id="encryptBtn">加密</button>
+            <button id="decryptBtn">解密</button>
+        </div>
+        
+        <div class="form-group">
+            <label for="outputText">輸出文本：</label>
+            <textarea id="outputText" readonly></textarea>
+        </div>
+        
+        <button id="copyBtn">複製結果</button>
+        
+        <div id="status" class="status"></div>
+    </div>
 
-<script>
-const substitutionMap = {
-  'a': 'u', 'b': 'r', 'c': 'x', 'd': 'p', 'e': 'q',
-  'f': 'w', 'g': 'y', 'h': 'z', 'i': 'v', 'j': 's',
-  'k': 't', 'l': 'n', 'm': 'o', 'n': 'l', 'o': 'm',
-  'p': 'd', 'q': 'e', 'r': 'b', 's': 'j', 't': 'k',
-  'u': 'a', 'v': 'i', 'w': 'f', 'x': 'c', 'y': 'g',
-  'z': 'h',
-  '/': ']', '\\': '[', '@': '!', '(': '/', ')': '\\', '?': '$'
-};
-
-const reverseMap = Object.fromEntries(
-  Object.entries(substitutionMap).map(([key, value]) => [value, key])
-);
-
-function encrypt(text) {
-  return text.toLowerCase().split('').map(char => {
-    return substitutionMap[char] || char;
-  }).join('');
-}
-
-function decrypt(text) {
-  return text.toLowerCase().split('').map(char => {
-    return reverseMap[char] || char;
-  }).join('');
-}
-
-function showResult(text) {
-  const resultArea = document.getElementById('resultArea');
-  const resultText = document.getElementById('resultText');
-  resultText.textContent = text;
-  resultArea.style.display = 'block';
-}
-
-document.getElementById('encryptBtn').addEventListener('click', () => {
-  const input = document.getElementById('inputText');
-  const encrypted = encrypt(input.value);
-  showResult(encrypted);
-});
-
-document.getElementById('decryptBtn').addEventListener('click', () => {
-  const input = document.getElementById('inputText');
-  const decrypted = decrypt(input.value);
-  showResult(decrypted);
-});
-
-document.getElementById('copyBtn').addEventListener('click', () => {
-  const resultText = document.getElementById('resultText');
-  navigator.clipboard.writeText(resultText.textContent).then(() => {
-    const copyBtn = document.getElementById('copyBtn');
-    copyBtn.textContent = '已複製！';
-    setTimeout(() => {
-      copyBtn.textContent = '複製結果';
-    }, 2000);
-  });
-});
-</script>
-</body></html>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const encryptBtn = document.getElementById('encryptBtn');
+            const decryptBtn = document.getElementById('decryptBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const password = document.getElementById('password');
+            const status = document.getElementById('status');
+            
+            // 用於生成隨機字節
+            function getRandomBytes(length) {
+                const array = new Uint8Array(length);
+                window.crypto.getRandomValues(array);
+                return array;
+            }
+            
+            // 從字符串生成密鑰
+            async function generateKey(password) {
+                if (!password) {
+                    showStatus('請輸入密碼', 'error');
+                    throw new Error('沒有提供密碼');
+                }
+                
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password);
+                
+                // 使用 SHA-256 進行雜湊，確保輸出是固定長度
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                
+                // 從雜湊創建 AES-GCM 密鑰
+                return await crypto.subtle.importKey(
+                    'raw',
+                    hashBuffer,
+                    { name: 'AES-GCM' },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            }
+            
+            // 加密函數
+            async function encrypt() {
+                try {
+                    const text = inputText.value.trim();
+                    const pwd = password.value;
+                    
+                    if (!text) {
+                        showStatus('請輸入要加密的文本', 'error');
+                        return;
+                    }
+                    
+                    // 生成密鑰
+                    const key = await generateKey(pwd);
+                    
+                    // 生成 IV（初始化向量）- 12 bytes for AES-GCM
+                    const iv = getRandomBytes(12);
+                    
+                    // 加密
+                    const encoder = new TextEncoder();
+                    const data = encoder.encode(text);
+                    
+                    const encryptedBuffer = await crypto.subtle.encrypt(
+                        {
+                            name: 'AES-GCM',
+                            iv: iv,
+                            tagLength: 128
+                        },
+                        key,
+                        data
+                    );
+                    
+                    // 合併 IV 和加密數據
+                    const result = new Uint8Array(iv.length + encryptedBuffer.byteLength);
+                    result.set(iv, 0);
+                    result.set(new Uint8Array(encryptedBuffer), iv.length);
+                    
+                    // 轉換為 Base64 以便顯示和存儲
+                    const base64Result = btoa(String.fromCharCode(...result));
+                    
+                    outputText.value = base64Result;
+                    showStatus('加密成功！', 'success');
+                } catch (error) {
+                    console.error('加密錯誤:', error);
+                    showStatus('加密失敗: ' + error.message, 'error');
+                }
+            }
+            
+            // 解密函數
+            async function decrypt() {
+                try {
+                    const encryptedText = inputText.value.trim();
+                    const pwd = password.value;
+                    
+                    if (!encryptedText) {
+                        showStatus('請輸入要解密的文本', 'error');
+                        return;
+                    }
+                    
+                    // 將 Base64 轉換回二進制數據
+                    const binaryString = atob(encryptedText);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    // 提取 IV（前 12 字節）
+                    const iv = bytes.slice(0, 12);
+                    const encryptedData = bytes.slice(12);
+                    
+                    // 生成密鑰
+                    const key = await generateKey(pwd);
+                    
+                    // 解密
+                    const decryptedBuffer = await crypto.subtle.decrypt(
+                        {
+                            name: 'AES-GCM',
+                            iv: iv,
+                            tagLength: 128
+                        },
+                        key,
+                        encryptedData
+                    );
+                    
+                    // 轉換為文本
+                    const decoder = new TextDecoder();
+                    const decryptedText = decoder.decode(decryptedBuffer);
+                    
+                    outputText.value = decryptedText;
+                    showStatus('解密成功！', 'success');
+                } catch (error) {
+                    console.error('解密錯誤:', error);
+                    showStatus('解密失敗: 可能是密碼錯誤或者文本格式不正確', 'error');
+                }
+            }
+            
+            // 複製結果到剪貼板
+            function copyToClipboard() {
+                if (!outputText.value) {
+                    showStatus('沒有可複製的內容', 'error');
+                    return;
+                }
+                
+                outputText.select();
+                document.execCommand('copy');
+                
+                // 使用新的剪貼板 API (如果可用)
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(outputText.value)
+                        .then(() => {
+                            showStatus('已複製到剪貼板', 'success');
+                        })
+                        .catch(err => {
+                            console.error('無法複製:', err);
+                            showStatus('複製失敗', 'error');
+                        });
+                } else {
+                    showStatus('已複製到剪貼板', 'success');
+                }
+            }
+            
+            // 顯示狀態信息
+            function showStatus(message, type) {
+                status.textContent = message;
+                status.className = 'status ' + type;
+                
+                // 5 秒後自動隱藏
+                setTimeout(() => {
+                    status.className = 'status';
+                }, 5000);
+            }
+            
+            // 事件監聽器
+            encryptBtn.addEventListener('click', encrypt);
+            decryptBtn.addEventListener('click', decrypt);
+            copyBtn.addEventListener('click', copyToClipboard);
+        });
+    </script>
+</body>
+</html>
